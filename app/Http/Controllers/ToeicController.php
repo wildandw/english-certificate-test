@@ -86,9 +86,10 @@ class ToeicController extends Controller
             return back()->withErrors($errors);
         }
 
-        // Validasi duplikasi
-        $this->checkFileDuplicates($collection, ['name']);
-        $this->checkDatabaseDuplicates($collection, \App\Models\ToeicScores::class, ['name']);
+        // validasi duplikasi di database di matikan terlebih dahulu, disini untuk aktifkan kembali
+        // $this->checkFileDuplicates($collection, ['name']);
+        // validasi duplikasi di database di matikan terlebih dahulu, disini untuk aktifkan kembali
+        // $this->checkDatabaseDuplicates($collection, \App\Models\ToeicScores::class, ['name']);
 
         // Import data + generate nomor sertifikat per baris
         $no_sertif = $request->input('no_sertif');
@@ -280,10 +281,11 @@ class ToeicController extends Controller
         if (count($errors)) {
             return back()->withErrors($errors);
         }
-
-        // Validasi duplikasi
-        $this->checkFileDuplicates($collection, ['name']);
-        $this->checkDatabaseDuplicates($collection, \App\Models\ToeicScores_Umum::class, ['name']);
+ 
+        // validasi duplikasi di database di matikan terlebih dahulu, disini untuk aktifkan kembali
+        // $this->checkFileDuplicates($collection, ['name']);
+        // validasi duplikasi di database di matikan terlebih dahulu, disini untuk aktifkan kembali
+        // $this->checkDatabaseDuplicates($collection, \App\Models\ToeicScores_Umum::class, ['name']);
 
         // Import data + generate nomor sertifikat per baris
         // Excel::import(new ToeicScoreImport(false), $request->file('score_file'));

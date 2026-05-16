@@ -7,21 +7,28 @@ use App\Models\ToeflJuniorScores;
 use App\Models\ScoreConversionToeflJunior;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
-use PhpOffice\PhpSpreadsheet\Shared\Date;
 
 class ToeflJuniorScoreImport implements ToModel, WithHeadingRow
 {
-     protected bool $simulateOnly;
+    protected bool $simulateOnly;
+    protected ?string $no_sertif;
+    protected ?string $valid_date;
 
-    public function __construct(bool $simulateOnly = false)
-    {
+    public function __construct(
+        bool $simulateOnly = false,
+        ?string $no_sertif = null,
+        ?string $valid_date = null
+    ) {
         $this->simulateOnly = $simulateOnly;
+        $this->no_sertif = $no_sertif;
+        $this->valid_date = $valid_date;
     }
+
     public function model(array $row)
     {
         $rawReading   = $row['reading_score'];
         $rawListening = $row['listening_score'];
-        $rawLanguage  = $row['language_form']; 
+        $rawLanguage  = $row['language_form'];
 
         $convertedReading = ScoreConversionToeflJunior::where('test_type', 'toefljunior')
             ->where('raw_score', $rawReading)
@@ -37,82 +44,60 @@ class ToeflJuniorScoreImport implements ToModel, WithHeadingRow
 
         $total = $convertedReading + $convertedListening + $convertedLanguage;
 
-
         if (! $this->simulateOnly) {
-                $kelas = $row['class'] ?? 'Unknown';
-                $noSertif = $this->generateCertificateNumber($kelas);
-                return new ToeflJuniorScores([
-                    'name'                  => $row['name'],
-                    'class'                 => $row['class'],
-                    'email'                                        => $row['email'],
-                    'gender'                                       => $row['gender'],
-                    'country_region_nationality'             => $row['country_of_region_of_nationality'],
-                    'country_region_origin'                  => $row['country_of_region_of_origin'],
-                    'native_language'                               => $row['native_language'],
-                    'date_of_birth'            => $this->parseExcelDate($row['date_of_birth']),
-                    'school_name'              => $row['school_name'],
-                    'exam_date'                => $this->parseExcelDate($row['exam_date']),
-                    'reading_score'         => $convertedReading,
-                    'listening_score'       => $convertedListening,
-                    'language_form_score'   => $convertedLanguage,
-                    'total_score'           => $total,
-                    'no_sertif'                => $noSertif,
-                ]);
-    }
-}
 
+            $kelas = $row['class'] ?? 'Unknown';
 
-protected function generateCertificateNumber(string $class): string
-    {
-        $id = DB::table('no_sertif')->insertGetId([
-            'no_sertif'  => null,
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
+            return new ToeflJuniorScores([
+                'name'                         => $row['name'],
+                'class'                        => $kelas,
+                'email'                        => $row['email'],
+                'gender'                       => $row['gender'],
+                'country_region_nationality'   => $row['country_of_region_of_nationality'],
+                'country_region_origin'        => $row['country_of_region_of_origin'],
+                'native_language'              => $row['native_language'],
+                'date_of_birth'                => $this->parseExcelDate($row['date_of_birth']),
+                'school_name'                  => $row['school_name'],
+                'exam_date'                    => $this->parseExcelDate($row['exam_date']),
+                'reading_score'                => $convertedReading,
+                'listening_score'              => $convertedListening,
+                'language_form_score'          => $convertedLanguage,
+                'total_score'                  => $total,
+                'no_sertif'                    => $this->no_sertif,
+                'valid_date'                   => $this->valid_date,
+            ]);
+        }
 
-        $period  = '05-2025'; // Atur sesuai periode
-        $noUrut  = str_pad($id, 4, '0', STR_PAD_LEFT);
-        $certNum = "LEAD05/13.{$noUrut}/{$class}/{$period}";
-
-        DB::table('no_sertif')
-            ->where('id', $id)
-            ->update(['no_sertif' => $certNum]);
-
-        return $certNum;
+        return null;
     }
 
-     protected function parseExcelDate($value): ?\DateTime
+    protected function parseExcelDate($value): ?\DateTime
     {
-        // 1. Angka Excel serial date
+        // Excel serial date
         if (is_numeric($value)) {
             return \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($value);
         }
 
-        // 2. Daftar format yang akan dicoba
         $formats = [
-            'Y-m-d',   // 2025-05-14
-            'Y/m/d',   // 2013/05/01
-            'm/d/Y',   // 05/14/2025
-            'd/m/Y',   // 14/05/2025
-            'd-m-Y',   // 14-05-2025
+            'Y-m-d',
+            'Y/m/d',
+            'm/d/Y',
+            'd/m/Y',
+            'd-m-Y',
         ];
 
-        // 3. Coba setiap format
         foreach ($formats as $fmt) {
             $dt = \DateTime::createFromFormat($fmt, $value);
+
             if ($dt && $dt->format($fmt) === $value) {
                 return $dt;
             }
         }
 
-        // 4. Fallback: parse string bebas
         try {
             return new \DateTime($value);
         } catch (\Exception $e) {
-            // gagal parse
+            return null;
         }
-
-        // 5. Jika semua gagal, kembalikan null
-        return null;
     }
 }

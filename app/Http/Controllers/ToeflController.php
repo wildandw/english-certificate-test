@@ -88,8 +88,9 @@ class ToeflController extends Controller
             }
 
         // Validasi duplikasi
-        $this->checkFileDuplicates($collection, ['name']);
-        $this->checkDatabaseDuplicates($collection, \App\Models\ToeflScores::class, ['name']);
+        //$this->checkFileDuplicates($collection, ['name']);
+        // validasi duplikasi di database di matikan terlebih dahulu, disini untuk aktifkan kembali
+        //$this->checkDatabaseDuplicates($collection, \App\Models\ToeflScores::class, ['name']);
 
         // Import data + generate nomor sertifikat per baris
         $no_sertif = $request->input('no_sertif');
@@ -285,9 +286,10 @@ public function uploadFormumum()
                 return back()->withErrors($errors);
             }
 
-        // Validasi duplikasi
-        $this->checkFileDuplicates($collection, ['name']);
-        $this->checkDatabaseDuplicates($collection, \App\Models\ToeflScores_Umum::class, ['name']);
+        // validasi duplikasi di database di matikan terlebih dahulu, disini untuk aktifkan kembali
+        // $this->checkFileDuplicates($collection, ['name']);
+        // validasi duplikasi di database di matikan terlebih dahulu, disini untuk aktifkan kembali
+        // $this->checkDatabaseDuplicates($collection, \App\Models\ToeflScores_Umum::class, ['name']);
 
         // Import data + generate nomor sertifikat per baris
         // Excel::import(new ToeflScoreImport_Umum(false), $request->file('score_file'));

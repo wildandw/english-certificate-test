@@ -1,1 +1,37 @@
-*.sqlite*
+# ENV
+.env
+.env.*
+!.env.example
+
+# DEPENDENCIES
+/vendor/
+/node_modules/
+
+# BUILD
+/public/build/
+/public/hot
+
+# STORAGE
+/storage/logs
+/storage/framework/cache
+/storage/framework/sessions
+/storage/framework/views
+
+# SQLITE
+*.sqlite
+*.sqlite3
+*.db
+/database/*.sqlite
+/database/*.sqlite3
+/database/*.db
+
+# LOG
+*.log
+
+# SYSTEM
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/

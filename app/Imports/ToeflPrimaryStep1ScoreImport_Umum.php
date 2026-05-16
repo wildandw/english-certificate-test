@@ -12,11 +12,18 @@ use PhpOffice\PhpSpreadsheet\Shared\Date;
 
 class ToeflPrimaryStep1ScoreImport_Umum implements ToModel, WithHeadingRow
 {
-     protected bool $simulateOnly;
+    protected bool $simulateOnly;
+    protected ?string $no_sertif;
+    protected ?string $valid_date;
 
-    public function __construct(bool $simulateOnly = false)
-    {
+    public function __construct(
+        bool $simulateOnly = false,
+        ?string $no_sertif = null,
+        ?string $valid_date = null
+    ) {
         $this->simulateOnly = $simulateOnly;
+        $this->no_sertif = $no_sertif;
+        $this->valid_date = $valid_date;
     }
     public function model(array $row)
     {
@@ -67,7 +74,8 @@ class ToeflPrimaryStep1ScoreImport_Umum implements ToModel, WithHeadingRow
                     'writing_score'  => $writing,
                     // 'speaking_score'  =>  $row['speaking'],
                     'total_score'    => $formatted,
-                    'no_sertif'                => $noSertif,
+                    'no_sertif'                      => $this->no_sertif,
+                'valid_date'                     => $this->valid_date,
                 ]);
     }
 }

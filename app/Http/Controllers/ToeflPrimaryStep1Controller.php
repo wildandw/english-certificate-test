@@ -87,9 +87,10 @@ class ToeflPrimaryStep1Controller extends Controller
                 return back()->withErrors($errors);
             }
 
-            // Validasi duplikasi
-            $this->checkFileDuplicates($collection, ['name']);
-            $this->checkDatabaseDuplicates($collection, \App\Models\ToeflPrimaryStep1Scores::class, ['name']);
+            // validasi duplikasi di database di matikan terlebih dahulu, disini untuk aktifkan kembali
+            // $this->checkFileDuplicates($collection, ['name']);
+            // validasi duplikasi di database di matikan terlebih dahulu, disini untuk aktifkan kembali
+            // $this->checkDatabaseDuplicates($collection, \App\Models\ToeflPrimaryStep1Scores::class, ['name']);
 
             // Import data + generate nomor sertifikat per baris
             $no_sertif = $request->input('no_sertif');
@@ -275,9 +276,10 @@ class ToeflPrimaryStep1Controller extends Controller
                 return back()->withErrors($errors);
             }
 
-            // Validasi duplikasi
-            $this->checkFileDuplicates($collection, ['name']);
-            $this->checkDatabaseDuplicates($collection, \App\Models\ToeflPrimaryStep1Scores_Umum::class, ['name']);
+            // validasi duplikasi di database di matikan terlebih dahulu, disini untuk aktifkan kembali
+            // $this->checkFileDuplicates($collection, ['name']);
+            // validasi duplikasi di database di matikan terlebih dahulu, disini untuk aktifkan kembali
+           // $this->checkDatabaseDuplicates($collection, \App\Models\ToeflPrimaryStep1Scores_Umum::class, ['name']);
 
             // Import data + generate nomor sertifikat per baris
             // Excel::import(new ToeflPrimaryStep1ScoreImport(false), $request->file('score_file'));
