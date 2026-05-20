@@ -397,7 +397,7 @@
       </div>
 
 
-      <div class="certificate-number">No: 010/UPK_Prodiksus/V/2025</div>
+      <div class="certificate-number">No: {{ $certificatetoeflprimarystep1->no_sertif }}</div>
       <div class="qr-validation">Scan here for validation</div>
           <div class="qr-code">{!! $qrCode !!}</div>
       <div class="valid-until">Valid until: {{ $formattedValidDate}}</div>

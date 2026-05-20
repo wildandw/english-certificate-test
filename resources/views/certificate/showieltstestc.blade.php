@@ -339,7 +339,7 @@
 
         <div class="date-section">
             <div>Test Date: <input type="text" class="date-input" value="{{ $formattedExamDate }}" readonly></div>
-            <input type="text" class="reference-input" value="No: 012/UPK_Prodiksus/V/2025">
+            <input type="text" class="reference-input" value="No: {{ $certificateieltstestc->no_sertif }}" readonly>
         </div>
         
         <div class="divider"></div>

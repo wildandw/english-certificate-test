@@ -216,7 +216,7 @@
         use Carbon\Carbon;
         $formattedExamDate = Carbon::parse($certificatetoefljunior->exam_date)->format('d-m-Y');
         $formattedDateofBirth = Carbon::parse($certificatetoefljunior->date_of_birth)->format('d-m-Y');
-         $formattedValidDate = Carbon::parse($certificate->valid_date)->format('F Y');
+         $formattedValidDate = Carbon::parse($certificatetoefljunior->valid_date)->format('F Y');
     @endphp
     <div class="certificate-container">
         <div class="background-img"></div>
@@ -229,7 +229,7 @@
             <div class="valid-until">Valid until: {{ $formattedValidDate}}</div>
         </div>
 
-        <div class="certificate-number">No. 011/UPK_Prodiksus/V/2025</div>
+        <div class="certificate-number">No. {{ $certificatetoefljunior->no_sertif }}</div>
 
         <div class="header">
             <div class="logo-container">

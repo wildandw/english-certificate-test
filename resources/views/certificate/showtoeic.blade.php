@@ -278,7 +278,7 @@
   <div class="certificate">
     <img src="https://bpiedu.id/yayasanbpi/images/2022/10/03/logo%20bpi%20clear.png" alt="Logo" class="logo" />
     
-    <div class="certificate-number">No: 013/UPK_Prodiksus/V/2025</div>
+    <div class="certificate-number">No: {{ $certificatetoeic->no_sertif }}</div>
     <div class="test-date">Test Date: {{ $formattedExamDate }}</div>
 
     <div class="title">TOEIC Prediction Test</div>
